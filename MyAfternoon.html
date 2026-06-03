@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
@@ -11,9 +11,9 @@
 <body>
 
 <div id="game-overlay-flappy">
-    <div class="alerta-virus">SISTEMA BLOQUEADO: DESAFIO FLAPPY BIRD</div>
-    <div class="instrucoes">> PASSE POR 4 CANOS PARA DESBLOQUEAR O ACESSO <</div>
-    <div id="cano-contador">Canos restantes: 4</div>
+    <div class="alerta-virus">SYSTEM LOCKED: FLAPPY BIRD CHALLENGE</div>
+    <div class="instrucoes">> PASS THROUGH 4 PIPES TO UNLOCK ACCESS <</div>
+    <div id="cano-contador">Pipes remaining: 4</div>
     
     <div id="flappy-container">
         <div id="bird"></div>
@@ -21,7 +21,6 @@
 </div>
 
 <style>
-    /* Overlay de Bloqueio */
     #game-overlay-flappy {
         position: fixed;
         top: 0;
@@ -34,6 +33,195 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    #cano-contador {
+        color: #33ff33;
+        font-size: 18px;
+        margin-bottom: 10px;
+        text-shadow: 0 0 5px #33ff33;
+    }
+
+    #flappy-container {
+        position: relative;
+        width: 400px;
+        height: 450px;
+        background-color: #050d05;
+        border: 2px solid #33ff33;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(51, 255, 51, 0.3);
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    #bird {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: #33ff33;
+        box-shadow: 0 0 8px #33ff33;
+        border-radius: 4px;
+        left: 50px;
+        top: 200px;
+    }
+
+    .cano {
+        position: absolute;
+        width: 50px;
+        background-color: #050d05;
+        border: 2px solid #33ff33;
+        box-shadow: 0 0 8px rgba(51, 255, 51, 0.5);
+        box-sizing: border-box;
+    }
+
+    body {
+        overflow: hidden;
+    }
+</style>
+
+<script>
+(() => {
+    const container = document.getElementById('flappy-container');
+    const bird = document.getElementById('bird');
+    const contadorText = document.getElementById('cano-contador');
+    const overlay = document.getElementById('game-overlay-flappy');
+
+    let birdY = 200;
+    let velocity = 0;
+    const gravity = 0.4;
+    const jump = -6.5;
+    let canosPassados = 0; 
+    const canosAlvo = 4;
+    let gameInterval, pipeInterval;
+    let listaCanos = [];
+    let jogoAtivo = true;
+
+    function voar() {
+        if (!jogoAtivo) return;
+        velocity = jump;
+    }
+    window.addEventListener('keydown', (e) => { if(e.code === 'Space') { voar(); e.preventDefault(); } });
+    container.addEventListener('click', voar);
+
+    function criarCano() {
+        if (!jogoAtivo) return;
+        const vao = 120; 
+        const alturaMinima = 50;
+        const alturaMaxima = container.clientHeight - vao - alturaMinima;
+        const alturaSuperior = Math.floor(Math.random() * (alturaMaxima - alturaMinima)) + alturaMinima;
+        const alturaInferior = container.clientHeight - vao - alturaSuperior;
+
+        const canoSup = document.createElement('div');
+        canoSup.className = 'cano';
+        canoSup.style.height = alturaSuperior + 'px';
+        canoSup.style.top = '0px';
+        canoSup.style.left = '400px';
+        container.appendChild(canoSup);
+
+        const canoInf = document.createElement('div');
+        canoInf.className = 'cano';
+        canoInf.style.height = alturaInferior + 'px';
+        canoInf.style.bottom = '0px';
+        canoInf.style.left = '400px';
+        container.appendChild(canoInf);
+
+        listaCanos.push({ top: canoSup, bottom: canoInf, x: 400, contabilizado: false });
+    }
+
+    function resetarJogo() {
+        birdY = 200;
+        velocity = 0;
+        canosPassados = 0;
+        contadorText.innerText = `Pipes remaining: ${canosAlvo}`;
+        listaCanos.forEach(c => { c.top.remove(); c.bottom.remove(); });
+        listaCanos = [];
+        jogoAtivo = true;
+    }
+
+    function atualizar() {
+        if (!jogoAtivo) return;
+
+        velocity += gravity;
+        birdY += velocity;
+        bird.style.top = birdY + 'px';
+
+        if (birdY <= 0 || birdY >= container.clientHeight - 24) {
+            resetarJogo();
+            return;
+        }
+
+        for (let i = listaCanos.length - 1; i >= 0; i--) {
+            let c = listaCanos[i];
+            c.x -= 2.5; 
+            c.top.style.left = c.x + 'px';
+            c.bottom.style.left = c.x + 'px';
+
+            if (!c.contabilizado && c.x + 50 < 50) {
+                c.contabilizado = true;
+                canosPassados++;
+                let restantes = canosAlvo - canosPassados;
+                contadorText.innerText = `Pipes remaining: ${restantes <= 0 ? 0 : restantes}`;
+                
+                if (canosPassados >= canosAlvo) {
+                    jogoAtivo = false;
+                    clearInterval(gameInterval);
+                    clearInterval(pipeInterval);
+                    overlay.style.display = 'none'; 
+                    document.body.style.overflow = 'auto'; 
+                    alert("ACCESS GRANTED!");
+                    return;
+                }
+            }
+
+            let birdBox = bird.getBoundingClientRect();
+            let topBox = c.top.getBoundingClientRect();
+            let botBox = c.bottom.getBoundingClientRect();
+
+            if (
+                birdBox.right > topBox.left && birdBox.left < topBox.right &&
+                (birdBox.top < topBox.bottom || birdBox.bottom > botBox.top)
+            ) {
+                resetarJogo();
+                return;
+            }
+
+            if (c.x < -60) {
+                c.top.remove();
+                c.bottom.remove();
+                listaCanos.splice(i, 1);
+            }
+        }
+    }
+
+    gameInterval = setInterval(atualizar, 20);
+    pipeInterval = setInterval(criarCano, 1600);
+})();
+</script>
+
+    <header class="bloco-hacker">
+        <h1>My Afternoon</h1>
+    </header>
+    
+    <div class="bloco-hacker">
+        <h1><span class="comando"></span>ENGLISH PRESENTATION SYSTEM</h1>
+        <p>Decryption successful. Select a file below to launch the documentation in a new tab:</p>
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+            <button onclick="window.open('Routine.html', '_blank')">Home</button>
+            <button onclick="window.open('MyMorning.html', '_blank')">Morning</button>
+            <button onclick="window.open('MyNight.html', '_blank')">Night</button>
+        </div>
+    </div>
+
+<div class="bloco-hacker">
+    <p>After the morning school period, I have my lunch. Right after lunch, I always brush my teeth before doing anything else. Then we have a short break, and when we're allowed to go to the music room, we play music. I love that room, but the afternoon classes usually make me feel sleepier.</p>
+</div>
+
+    <img src="data:image/jpeg;base64,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" alt="Afternoon Routine Pic">
+
+</body>
+</html>
         font-family: 'Courier New', Courier, monospace;
     }
 
