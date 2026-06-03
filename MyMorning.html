@@ -1,47 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>My_Morning.HTML</title> 
-    <style> 
-         @import url('estilo.css');
-    </style> 
-</head> 
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My_Morning.HTML</title>
+
+    <style>
+        @import url('estilo.css');
+    </style>
+</head>
+
 <body>
 
-<div id="hacker-spam-overlay">
-        <div class="alerta-virus">CRITICAL SEARCH WARNING: SYSTEM LOCKED</div>
-        <div style="margin-bottom: 20px; text-align: center;">
-            <span class="comando">Bypass the firewall maze to view the English project database.</span>
+    <!-- TELA DE BLOQUEIO -->
+    <div id="hacker-spam-overlay">
+
+        <div class="alerta-virus">
+            CRITICAL SEARCH WARNING: SYSTEM LOCKED
         </div>
-        
+
+        <div style="margin-bottom: 20px; text-align: center;">
+            <span class="comando">
+                Bypass the firewall maze to view the English project database.
+            </span>
+        </div>
+
         <div class="labirinto-container" id="campo-minijogo">
+
             <div id="start-zone">START</div>
             <div id="end-zone">END</div>
 
-            <div class="parede" style="top: 70px; left: 0; width: 310px; height: 15px;"></div>
-            <div class="parede" style="top: 140px; left: 90px; width: 310px; height: 15px;"></div>
-            <div class="parede" style="top: 210px; left: 0; width: 260px; height: 15px;"></div>
-            <div class="parede" style="top: 210px; left: 320px; width: 80px; height: 15px;"></div>
-            <div class="parede" style="top: 280px; left: 90px; width: 310px; height: 15px;"></div>
+            <div class="parede" style="top:70px; left:0; width:310px; height:15px;"></div>
+            <div class="parede" style="top:140px; left:90px; width:310px; height:15px;"></div>
+            <div class="parede" style="top:210px; left:0; width:260px; height:15px;"></div>
+            <div class="parede" style="top:210px; left:320px; width:80px; height:15px;"></div>
+            <div class="parede" style="top:280px; left:90px; width:310px; height:15px;"></div>
+
         </div>
-        
+
         <div class="instrucoes">
-            Move cursor from <span style="color:#0033ff">START</span> to <span style="color:#ff3333">END</span>.<br>
+            Move cursor from
+            <span style="color:#0033ff">START</span>
+            to
+            <span style="color:#ff3333">END</span>.
+            <br>
             Do not touch the green security firewalls!
         </div>
+
     </div>
 
+    <!-- CONTEÚDO -->
+    <header class="bloco-hacker">
+        <h1>My Morning</h1>
+    </header>
+
     <div class="bloco-hacker">
-        <h1><span class="comando"></span>ENGLISH PRESENTATION SYSTEM</h1>
-        <p>Decryption successful. Select a file below to launch the documentation in a new tab:</p>
-        
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+        <h1>ENGLISH PRESENTATION SYSTEM</h1>
+        <p>
+            Decryption successful. Select a file below to launch the documentation in a new tab:
+        </p>
+
+        <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:20px;">
             <button onclick="window.open('Routine.html', '_blank')">Home</button>
             <button onclick="window.open('MyAfternoon.html', '_blank')">Afternoon</button>
             <button onclick="window.open('MyNight.html', '_blank')">Night</button>
         </div>
+    </div>
+
+    <img
+        src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=400&auto=format&fit=crop"
+        alt="My Morning"
+        style="max-width:300px; border-radius:8px; display:block; margin:20px auto;">
+
+    <div class="bloco-hacker">
+        <p>
+            Hi, my name is Antônio, and I am 16 years old.
+            My routine is very simple.
+
+            I usually wake up at 5:00 AM.
+            At this time it is very cold, so I get up at 5:30 AM.
+
+            After waking up, I brush my teeth, get dressed, and have breakfast.
+
+            A few minutes later, I go to school while listening to music.
+
+            School in the morning is pretty good.
+        </p>
     </div>
 
     <script>
@@ -49,7 +94,7 @@
         const paredes = document.querySelectorAll('.parede');
         const startZone = document.getElementById('start-zone');
         const endZone = document.getElementById('end-zone');
-        
+
         let jogoAtivo = false;
 
         startZone.addEventListener('mouseenter', () => {
@@ -61,7 +106,7 @@
         paredes.forEach(parede => {
             parede.addEventListener('mouseenter', () => {
                 if (jogoAtivo) {
-                    alert("ACCESS DENIED: Firewall detected unauthorized movement! Resetting...");
+                    alert("ACCESS DENIED: Firewall detected unauthorized movement!");
                     resetarJogo();
                 }
             });
@@ -69,10 +114,20 @@
 
         endZone.addEventListener('mouseenter', () => {
             if (jogoAtivo) {
-                alert("SYSTEM BYPASS SUCCESSFUL: Welcome agent.");
-                overlay.style.display = 'none';
+
+                overlay.innerHTML = `
+                    <div class="bloco-hacker" style="margin-top:150px; text-align:center;">
+                        <h1>ACCESS GRANTED</h1>
+                        <p>Opening database...</p>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                }, 1500);
+
             } else {
-                alert("SECURITY EXPLOIT DETECTED: You must start from the START zone!");
+                alert("You must start from the START zone!");
             }
         });
 
@@ -89,97 +144,6 @@
         }
     </script>
 
-    <header class="bloco-hacker">
-        <h1>My Morning</h1>
-    </header>
-
-    <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=400&auto=format&fit=crop" alt="Tired Dog Meme" style="max-width: 300px; border-radius: 8px;">
-
-    <div class="bloco-hacker">
-        <p>Hi, my name is Antônio, and I'm 16 years old. My routine is very simple. I usually wake up at 5:00 AM. At this hour it is very cold, because of this, I get up just at 5:30 AM. After waking up, I always brush my teeth to feel fresh. Then, I get dressed and have breakfast. A few minutes later, I go to school, listening to music on the way. School in the morning is pretty good!</p>
-    </div>
-
 </body>
-</html>
-            Do not touch the green security firewalls!
-        </div>
-    </div>
 
-
-    <!-- CONTEÚDO PRINCIPAL DO SEU SITE (SÓ LIBERA DEPOIS DO LABIRINTO) -->
-    <div class="bloco-hacker">
-        <h1><span class="comando"></span>ENGLISH PRESENTATION SYSTEM</h1>
-        <p>Decryption successful. Select a file below to launch the documentation in a new tab:</p>
-        
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
-            <!-- Seus botões estilizados abrindo novas guias -->
-            <button onclick="window.open('Routine.html', '_blank')">Home</button>
-            <button onclick="window.open('MyAfternoon.html', '_blank')">Afternoon</button>
-            <button onclick="window.open('MyNight.html', '_blank')">Night</button>
-        </div>
-    </div>
-
-
-    <!-- CONTROLE JAVASCRIPT DO JOGO -->
-    <script>
-        const overlay = document.getElementById('hacker-spam-overlay');
-        const paredes = document.querySelectorAll('.parede');
-        const startZone = document.getElementById('start-zone');
-        const endZone = document.getElementById('end-zone');
-        
-        let jogoAtivo = false;
-
-        // Ativa o sistema apenas quando entra no START
-        startZone.addEventListener('mouseenter', () => {
-            jogoAtivo = true;
-            startZone.style.backgroundColor = '#33ff33';
-            startZone.style.color = '#000000';
-        });
-
-        // Detecção de colisão nas paredes verdes
-        paredes.forEach(parede => {
-            parede.addEventListener('mouseenter', () => {
-                if (jogoAtivo) {
-                    alert("ACCESS DENIED: Firewall detected unauthorized movement! Resetting...");
-                    resetarJogo();
-                }
-            });
-        });
-
-        // Chegada ao objetivo final
-        endZone.addEventListener('mouseenter', () => {
-            if (jogoAtivo) {
-                alert("SYSTEM BYPASS SUCCESSFUL: Welcome agent.");
-                overlay.style.display = 'none'; // Desativa o bloqueio e mostra o site
-            } else {
-                alert("SECURITY EXPLOIT DETECTED: You must start from the START zone!");
-            }
-        });
-
-        // Se o usuário tirar o mouse de dentro do quadrado do labirinto, reseta por segurança (anti-cheat)
-        document.getElementById('campo-minijogo').addEventListener('mouseleave', () => {
-            if (jogoAtivo) {
-                resetarJogo();
-            }
-        });
-
-        function resetarJogo() {
-            jogoAtivo = false;
-            startZone.style.backgroundColor = '#0033ff';
-            startZone.style.color = '#ffffff';
-        }
-    </script>
-
-    <header class="bloco-hacker">
-        <h1>My Morning</h1>
-    </header>
-
-    <img src="https://www.google.com/imgres?q=meme%20image&imgurl=https%3A%2F%2Fichef.bbci.co.uk%2Face%2Fstandard%2F976%2Fcpsprodpb%2F16620%2Fproduction%2F_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg&imgrefurl=https%3A%2F%2Fwww.bbc.co.uk%2Fnews%2Fworld-us-canada-37493165&docid=U5yjVXuay-ZBtM&tbnid=eI__pqpElDG4XM&vet=12ahUKEwjQ9IXL0cuUAxXPlZUCHYhAHO0QnPAOegQIMhAB..i&w=976&h=850&hcb=2&ved=2ahUKEwjQ9IXL0cuUAxXPlZUCHYhAHO0QnPAOegQIMhAB" alt="My Morning">
-
-
-    <div class="bloco-hacker">
-        <p>Hi my names is Antônio, and i'm 16 year old and my routine is very simple, i usualy wake up at 5AM, in thi hour is very cold, because this, I get up just at 5,30AM, i dressed and have a breakfast, a feaw minutes later I get go to school, I go listening music in the way. The school in the morning is kinda good.</p>
-    </div>
-
-</body>
 </html>
