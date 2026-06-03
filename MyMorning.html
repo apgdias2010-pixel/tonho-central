@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>My_Routine_HTML</title> 
+    <title>My_Morning.HTML</title> 
     <style> 
-         
          @import url('estilo.css');
-
     </style> 
 </head> 
 <body>
@@ -19,21 +17,90 @@
         </div>
         
         <div class="labirinto-container" id="campo-minijogo">
-            <!-- Início e Fim -->
             <div id="start-zone">START</div>
             <div id="end-zone">END</div>
 
-            <!-- Estrutura das Paredes -->
             <div class="parede" style="top: 70px; left: 0; width: 310px; height: 15px;"></div>
             <div class="parede" style="top: 140px; left: 90px; width: 310px; height: 15px;"></div>
             <div class="parede" style="top: 210px; left: 0; width: 260px; height: 15px;"></div>
             <div class="parede" style="top: 210px; left: 320px; width: 80px; height: 15px;"></div>
             <div class="parede" style="top: 280px; left: 90px; width: 310px; height: 15px;"></div>
-            
         </div>
         
         <div class="instrucoes">
             Move cursor from <span style="color:#0033ff">START</span> to <span style="color:#ff3333">END</span>.<br>
+            Do not touch the green security firewalls!
+        </div>
+    </div>
+
+    <div class="bloco-hacker">
+        <h1><span class="comando"></span>ENGLISH PRESENTATION SYSTEM</h1>
+        <p>Decryption successful. Select a file below to launch the documentation in a new tab:</p>
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+            <button onclick="window.open('Routine.html', '_blank')">Home</button>
+            <button onclick="window.open('MyAfternoon.html', '_blank')">Afternoon</button>
+            <button onclick="window.open('MyNight.html', '_blank')">Night</button>
+        </div>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('hacker-spam-overlay');
+        const paredes = document.querySelectorAll('.parede');
+        const startZone = document.getElementById('start-zone');
+        const endZone = document.getElementById('end-zone');
+        
+        let jogoAtivo = false;
+
+        startZone.addEventListener('mouseenter', () => {
+            jogoAtivo = true;
+            startZone.style.backgroundColor = '#33ff33';
+            startZone.style.color = '#000000';
+        });
+
+        paredes.forEach(parede => {
+            parede.addEventListener('mouseenter', () => {
+                if (jogoAtivo) {
+                    alert("ACCESS DENIED: Firewall detected unauthorized movement! Resetting...");
+                    resetarJogo();
+                }
+            });
+        });
+
+        endZone.addEventListener('mouseenter', () => {
+            if (jogoAtivo) {
+                alert("SYSTEM BYPASS SUCCESSFUL: Welcome agent.");
+                overlay.style.display = 'none';
+            } else {
+                alert("SECURITY EXPLOIT DETECTED: You must start from the START zone!");
+            }
+        });
+
+        document.getElementById('campo-minijogo').addEventListener('mouseleave', () => {
+            if (jogoAtivo) {
+                resetarJogo();
+            }
+        });
+
+        function resetarJogo() {
+            jogoAtivo = false;
+            startZone.style.backgroundColor = '#0033ff';
+            startZone.style.color = '#ffffff';
+        }
+    </script>
+
+    <header class="bloco-hacker">
+        <h1>My Morning</h1>
+    </header>
+
+    <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=400&auto=format&fit=crop" alt="Tired Dog Meme" style="max-width: 300px; border-radius: 8px;">
+
+    <div class="bloco-hacker">
+        <p>Hi, my name is Antônio, and I'm 16 years old. My routine is very simple. I usually wake up at 5:00 AM. At this hour it is very cold, because of this, I get up just at 5:30 AM. After waking up, I always brush my teeth to feel fresh. Then, I get dressed and have breakfast. A few minutes later, I go to school, listening to music on the way. School in the morning is pretty good!</p>
+    </div>
+
+</body>
+</html>
             Do not touch the green security firewalls!
         </div>
     </div>
