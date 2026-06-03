@@ -1,20 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>My_Night.HTML</title> 
     <style> 
-         
          @import url('estilo.css');
-
     </style> 
 </head> 
 <body>
 
     <div id="game-overlay-mario">
-    <div class="alerta-virus">SISTEMA BLOQUEADO: DESAFIO RETRO</div>
-    <div class="instrucoes">> ALCANCE O BLOCO [?] PARA DESBLOQUEAR O SITE <</div>
+    <div class="alerta-virus">SYSTEM LOCKED: RETRO CHALLENGE</div>
+    <div class="instrucoes">> REACH THE [?] BLOCK TO UNLOCK THE SITE <</div>
     
     <div id="mario-container">
         <div class="chao-mario"></div>
@@ -26,7 +24,6 @@
 </div>
 
 <style>
-    /* Overlay de Bloqueio */
     #game-overlay-mario {
         position: fixed;
         top: 0;
@@ -34,6 +31,198 @@
         width: 100vw;
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.98);
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    #mario-container {
+        position: relative;
+        width: 450px;
+        height: 300px;
+        background-color: #050d05;
+        border: 2px solid #33ff33;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(51, 255, 51, 0.3);
+        overflow: hidden;
+    }
+
+    .chao-mario {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        background-color: #050d05;
+        border-top: 4px dashed #33ff33;
+    }
+
+    .plataforma-mario {
+        position: absolute;
+        background-color: #050d05;
+        border: 2px solid #33ff33;
+        box-shadow: 0 0 6px rgba(51, 255, 51, 0.4);
+    }
+
+    .obstaculo-mario {
+        position: absolute;
+        background-color: #ff3333;
+        box-shadow: 0 0 8px #ff3333;
+    }
+
+    #bloco-vitoria {
+        position: absolute;
+        right: 30px;
+        bottom: 120px;
+        width: 35px;
+        height: 35px;
+        border: 2px solid #33ff33;
+        background-color: #000;
+        color: #33ff33;
+        font-weight: bold;
+        text-align: center;
+        line-height: 35px;
+        box-shadow: 0 0 10px #33ff33;
+        animation: piscar 0.8s infinite;
+    }
+
+    #mario-player {
+        position: absolute;
+        width: 20px;
+        height: 25px;
+        background-color: #33ff33;
+        box-shadow: 0 0 8px #33ff33;
+        left: 20px;
+        bottom: 30px;
+    }
+</style>
+
+<script>
+(() => {
+    const player = document.getElementById('mario-player');
+    const overlay = document.getElementById('game-overlay-mario');
+    const blocoVitoria = document.getElementById('bloco-vitoria');
+    
+    let pX = 20, pY = 30; 
+    let velX = 0, velY = 0;
+    let noChao = true;
+    const gravidade = 0.6;
+    const velocidadeMovimento = 3;
+    
+    const teclas = {};
+    window.addEventListener('keydown', (e) => { teclas[e.code] = true; });
+    window.addEventListener('keyup', (e) => { teclas[e.code] = false; });
+
+    const plat = { x: 120, y: 80, w: 100, h: 20 }; 
+    const obst = { x: 270, y: 30, w: 30, h: 30 };
+
+    function resetarJogador() {
+        pX = 20;
+        pY = 30;
+        velX = 0;
+        velY = 0;
+    }
+
+    function loopJogo() {
+        if (teclas['ArrowRight'] || teclas['KeyD']) velX = velocidadeMovimento;
+        else if (teclas['ArrowLeft'] || teclas['KeyA']) velX = -velocidadeMovimento;
+        else velX = 0;
+
+        if ((teclas['ArrowUp'] || teclas['KeyW'] || teclas['Space']) && noChao) {
+            velY = 10;
+            noChao = false;
+        }
+
+        velY -= gravidade;
+        
+        pX += velX;
+        pY += velY;
+
+        if (pX < 0) pX = 0;
+        if (pX > 430) pX = 430;
+
+        if (pY <= 30) {
+            pY = 30;
+            velY = 0;
+            noChao = true;
+        }
+
+        if (pX + 20 > plat.x && pX < plat.x + plat.w) {
+            if (pY >= plat.y && pY + velY <= plat.y + 5 && velY <= 0) {
+                pY = plat.y;
+                velY = 0;
+                noChao = true;
+            }
+        }
+
+        if (pX + 20 > obst.x && pX < obst.x + obst.w && pY < obst.y + obst.h && pY + 25 > obst.y) {
+            resetarJogador();
+        }
+
+        let bX = 385; 
+        let bY = 120;
+        if (pX + 20 > bX && pX < bX + 35 && pY + 25 > bY && pY < bY + 35) {
+            overlay.style.display = 'none'; 
+            alert("SYSTEM UNLOCKED SUCCESSFULLY!");
+            return; 
+        }
+
+        player.style.left = pX + 'px';
+        player.style.bottom = pY + 'px';
+
+        requestAnimationFrame(loopJogo);
+    }
+
+    requestAnimationFrame(loopJogo);
+})();
+</script>
+
+    <header class="bloco-hacker">
+        <h1>My Night</h1>
+    </header>
+
+     <div class="bloco-hacker">
+        <h1><span class="comando"></span>ENGLISH PRESENTATION SYSTEM</h1>
+        <p>Decryption successful. Select a file below to launch the documentation in a new tab:</p>
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+            <button onclick="window.open('Routine.html', '_blank')">Home</button>
+            <button onclick="window.open('MyAfternoon.html', '_blank')">Afternoon</button>
+            <button onclick="window.open('MyMorning.html', '_blank')">Morning</button>
+        </div>
+    </div>
+
+    <img src="data:image/jpeg;base64,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承t...== alt="hi">
+
+    <div class="bloco-hacker">
+        <p>After school, at night, I go home. At home, I play the electric guitar and watch series. I usually study math or IT because my dream is to work with systems analysis.</p>
+        <p>Before going to sleep, I always brush my teeth and take a relaxing shower. After my long day, I finally go to bed, and before sleeping, I think about so many things.</p>
+    </div>
+
+    <footer>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-h7I7rj8v0lHO8qBsUsVRRV3br0bGRM4wdA&s" alt="Gatoguitarra">
+    </footer>
+
+    <button onclick="tocarMeme()">GUITAR SOLO</button>
+
+<audio id="audioMeme">
+    <source src="nokia.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function tocarMeme() {
+    var audio = document.getElementById("audioMeme");
+    if (audio.paused) {
+        audio.play();
+    }
+}
+</script>
+
+</body>
+</html>
         z-index: 99999;
         display: flex;
         flex-direction: column;
